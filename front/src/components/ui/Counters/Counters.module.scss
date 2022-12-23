@@ -1,0 +1,21 @@
+@import "../../../scss/variables";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > .count {
+    font-size: 24px;
+    text-align: center;
+
+    .heading {
+      color: $white;
+      text-transform: capitalize;
+    }
+
+    .number {
+      font-weight: bold;
+    }
+  }
+}

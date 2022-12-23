@@ -1,0 +1,45 @@
+@import "../../scss/variables";
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  margin: 0 auto;
+  padding: 25px;
+
+  width: 100%;
+  max-width: 560px;
+  height: 100%;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &.otherpage {
+    position: relative;
+    height: 280px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: $bx-accent;
+
+    &::before {
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      /*       width: inherit;
+      height: 100%; */
+      background: linear-gradient(rgba(156, 156, 156, 0), #3a1126);
+      content: "";
+      border-radius: inherit;
+    }
+  }
+}
+
+.heading {
+  text-transform: uppercase;
+  color: $white;
+  z-index: 1;
+}

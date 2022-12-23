@@ -1,0 +1,54 @@
+@import "../../../../scss/variables";
+@import "../../../../scss/animations";
+
+.wrapper {
+  position: relative;
+
+  button {
+    width: 27px;
+    height: 27px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .menu {
+    position: absolute;
+    display: none;
+    top: calc(100% + 10px);
+    right: 0;
+    padding: 10px 12px;
+    background-color: #fff;
+    font-size: 14px;
+    box-shadow: $bx-16;
+    border-radius: 10px 0 10px 10px;
+    animation: opacity 0.4s;
+
+    &--active {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        a,
+        span {
+          font-weight: 500;
+          margin: 4px 0;
+          color: #000;
+          text-decoration: none;
+          transition: color 0.2 ease-in-out;
+          white-space: nowrap;
+          cursor: pointer;
+
+          &:hover,
+          &:active {
+            color: $accent;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@import "../../../scss/animations";
+@import "../../../scss/variables";
+
+.alert {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #5be7c4;
+  color: #252a34;
+  animation: opacity 0.4s;
+  padding: 10px;
+  border-radius: 10px;
+
+  &.error {
+    background-color: #ff2e63;
+    color: $white;
+  }
+  &.info {
+    background-color: #50c1e9;
+  }
+  &.warning {
+    background-color: #f75940;
+    color: $white;
+  }
+}
