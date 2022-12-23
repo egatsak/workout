@@ -1,4 +1,3 @@
-import { concurrently } from "concurrently";
 import asyncHandler from "express-async-handler";
 import ExerciseLog from "../../models/exerciseLogModel.js";
 import User from "../../models/userModel.js";
@@ -12,6 +11,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
     .select("-password")
     .lean();
+
   if (!user) {
     res.status(404);
     throw new Error("Profile not found!");

@@ -15,7 +15,9 @@ export const $api = async ({
 }) => {
   if (auth) {
     const token = localStorage.getItem("token");
-    instance.defaults.headers.common["Authorization"] = token;
+    instance.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${token}`;
   }
 
   try {

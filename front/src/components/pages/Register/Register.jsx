@@ -6,7 +6,7 @@ import Button from "../../ui/Button/Button";
 
 import styles from "./Register.module.scss";
 import bgImage from "./../../../images/bg-auth.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { $api } from "../../../api/api";
 import Loader from "../../ui/Loader/Loader";
@@ -15,6 +15,9 @@ import Alert from "../../ui/Alert/Alert";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const {
     mutate: register,
@@ -33,13 +36,21 @@ const Register = () => {
     {
       onSuccess(data) {
         console.log(data);
+        navigate("/auth");
       }
     }
   );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    console.log("submit", password, confirmPassword);
+    if (password !== confirmPassword) {
+      //error = "Passwords don't match!";
+      console.log("Passwords don't match!");
+      setConfirmPassword("");
+      setPassword("");
+      return;
+    }
     register();
   };
 
@@ -68,8 +79,8 @@ const Register = () => {
           <Input
             type="password"
             placeholder="Confirm password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
           <Link to="/auth" className="dark-link">

@@ -1,18 +1,21 @@
 import { useState } from "react";
-import Select from "react-select";
 
 import Layout from "../../common/Layout";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 
-import styles from "./NewWorkout.module.scss";
-import bgImage from "./../../../images/bg-workout.jpg";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import styles from "./NewExercise.module.scss";
+import bgImage from "./../../../images/bg-exercise.jpg";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
-const NewWorkout = () => {
+const data = ["chest", "shoulders", "biceps", "legs", "hit"];
+
+const NewExercise = () => {
   const [name, setName] = useState("");
-  const [exercises, setExercises] = useState();
+  const [times, setTimes] = useState(0);
+  const [imageId, setImageId] = useState(0);
+
   const { isAuth } = useAuth();
   const location = useLocation();
 
@@ -27,7 +30,7 @@ const NewWorkout = () => {
 
   return (
     <>
-      <Layout bgImage={bgImage} heading="Create new workout" />
+      <Layout bgImage={bgImage} heading="Create new exercise" />
 
       <div className={styles.wrapper}>
         <form onSubmit={handleSubmit}>
@@ -38,10 +41,24 @@ const NewWorkout = () => {
             onChange={(e) => setName(e.target.value)}
             required
           />
-          <Link to="/new-exercise" className="dark-link">
-            Add new exercise
-          </Link>
-          <Select
+          <Input
+            type="number"
+            placeholder="Enter times"
+            value={times}
+            onChange={(e) => setTimes(e.target.value)}
+            required
+          />
+          <div className={styles.images}>
+            {data.map((item) => {
+              return (
+                <img
+                  src={`uploads/exercise/icon-${item}.svg`}
+                  alt={`Icon-${item}`}
+                />
+              );
+            })}
+          </div>
+          {/*  <Select
             classNamePrefix="select2-selection"
             placeholder="Exercises"
             title="Exercises"
@@ -49,10 +66,10 @@ const NewWorkout = () => {
               { value: "sdfsdf", label: "Push-ups" },
               { value: "sgnods", label: "Pull-ups" }
             ]}
-            value={exercises}
-            onChange={setExercises}
+                  value={exercises}
+            onChange={setExercises} 
             isMulti={true}
-          />
+          /> */}
           <Button type="submit" variant="accent">
             Create
           </Button>
@@ -62,4 +79,4 @@ const NewWorkout = () => {
   );
 };
 
-export default NewWorkout;
+export default NewExercise;

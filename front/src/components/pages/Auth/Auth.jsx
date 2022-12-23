@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 
 import Layout from "../../common/Layout";
@@ -11,10 +11,14 @@ import Loader from "../../ui/Loader/Loader";
 import styles from "./Auth.module.scss";
 import bgImage from "./../../../images/bg-auth.jpg";
 import { $api } from "../../../api/api";
+import { useAuth } from "../../../hooks/useAuth";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setIsAuth } = useAuth();
+  const navigate = useNavigate();
 
   const {
     mutate: login,
@@ -33,10 +37,19 @@ const Auth = () => {
     {
       onSuccess(data) {
         console.log(data);
-        localStorage.setItem("token", data.token);
+        successLoginHandler(data.token);
       }
     }
   );
+
+  const successLoginHandler = (token) => {
+    localStorage.setItem("token", token);
+
+    setIsAuth(true);
+    setEmail("");
+    setPassword("");
+    navigate("/");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,14 +65,14 @@ const Auth = () => {
         {error && <Alert type="error">{error}</Alert>}
         <form onSubmit={handleSubmit}>
           <Input
-            type="text"
+            type="email"
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
-            type="text"
+            type="password"
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

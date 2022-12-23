@@ -2,19 +2,21 @@ import React from "react";
 
 import styles from "./Counters.module.scss";
 
-const counters = { minutes: 1, workouts: 2, kgs: 3 };
-
-const Counters = () => {
+const Counters = ({ data }) => {
   return (
     <div className={styles.wrapper}>
-      {Object.entries(counters).map((item) => {
-        return (
-          <div className={styles.count} key={"key" + item[0]}>
-            <div className={styles.heading}>{item[0]}</div>
-            <div className={styles.number}>{item[1]}</div>
-          </div>
-        );
-      })}
+      <div className={styles.count}>
+        <div className={styles.heading}>Minutes</div>
+        <div className={styles.number}>{data.minutes}</div>
+      </div>
+      <div className={styles.count}>
+        <div className={styles.heading}>Workouts</div>
+        <div className={styles.number}>{data.workouts}</div>
+      </div>
+      <div className={styles.count}>
+        <div className={styles.heading}>Kgs</div>
+        <div className={styles.number}>{data.kgs}</div>
+      </div>
     </div>
   );
 };

@@ -7,26 +7,38 @@ import hamburgerImage from "../../../../images/header/hamburger.svg";
 import hamburgerClose from "../../../../images/header/hamburger-close.svg";
 
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../../hooks/useAuth";
+import { useOutsideAlerter } from "../../../../hooks/useOutsideAlerter";
 
 const Burger = () => {
   const [show, setShow] = useState(false);
+  const { setIsAuth } = useAuth();
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useOutsideAlerter(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    ///////////////////////////////!!!!!!!!!!!!!!!!!!!!!
+    setIsAuth(false);
+    setIsComponentVisible(false);
+  };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={ref}>
       <button
         onClick={() => {
-          setShow(!show);
+          setIsComponentVisible(!isComponentVisible);
         }}
       >
         <img
-          src={show ? hamburgerClose : hamburgerImage}
-          alt="Burger"
+          src={isComponentVisible ? hamburgerClose : hamburgerImage}
+          alt="Menu"
         />
       </button>
 
       <nav
         className={
-          show
+          isComponentVisible
             ? `${styles.menu} ${styles["menu--active"]}`
             : `${styles.menu}`
         }
@@ -40,9 +52,7 @@ const Burger = () => {
             );
           })}
           <li>
-            <span href="" onClick={() => {}}>
-              Logout
-            </span>
+            <span onClick={handleLogout}>Logout</span>
           </li>
         </ul>
       </nav>
