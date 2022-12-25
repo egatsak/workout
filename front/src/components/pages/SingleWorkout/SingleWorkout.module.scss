@@ -1,0 +1,43 @@
+@import "../../../scss/variables";
+
+.wrapper {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 50px 50px;
+  text-align: center;
+}
+
+.profile {
+  z-index: 1;
+}
+
+.main {
+  a {
+    text-decoration: none;
+  }
+
+  .wrapper-exercise {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: $purple;
+    color: $white;
+    padding: 7px 20px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  &.finished {
+    background-color: $dark-purple;
+  }
+}
+
+.line {
+  width: 100%;
+  padding: 0 !important;
+  height: 1px;
+  margin-bottom: 30px;
+  background-color: $purple;
+}

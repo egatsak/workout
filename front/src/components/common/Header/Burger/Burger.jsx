@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { menu } from "./menuBase";
 
 import styles from "./Burger.module.scss";
@@ -11,7 +9,6 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { useOutsideAlerter } from "../../../../hooks/useOutsideAlerter";
 
 const Burger = () => {
-  const [show, setShow] = useState(false);
   const { setIsAuth } = useAuth();
   const { ref, isComponentVisible, setIsComponentVisible } =
     useOutsideAlerter(false);

@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import { isValidObjectId } from "mongoose";
 import Workout from "../../models/workoutModel.js";
 
 //@desc   Create new workout
@@ -7,7 +8,6 @@ import Workout from "../../models/workoutModel.js";
 
 export const createNewWorkout = asyncHandler(async (req, res) => {
   const { name, exerciseIds } = req.body;
-
   const workout = await Workout.create({
     name,
     exercises: exerciseIds
@@ -21,9 +21,19 @@ export const createNewWorkout = asyncHandler(async (req, res) => {
 //@access Private
 
 export const getWorkout = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) {
+    res.status(404);
+    throw new Error("Current workout is not found!");
+  }
+
   const workout = await Workout.findById(req.params.id)
     .populate("exercises")
     .lean();
+
+  if (!workout) {
+    res.status(404);
+    throw new Error("Current workout is not found!");
+  }
 
   let minutes = Math.ceil(workout.exercises.length * 3.7);
   res.json({ ...workout, minutes });
@@ -35,6 +45,11 @@ export const getWorkout = asyncHandler(async (req, res) => {
 
 export const updateWorkout = asyncHandler(async (req, res) => {
   const { name, exerciseIds, workoutId } = req.body;
+
+  if (!isValidObjectId(workoutId)) {
+    res.status(404);
+    throw new Error("Current workout is not found!");
+  }
 
   const workout = await Workout.findById(workoutId);
 

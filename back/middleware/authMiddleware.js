@@ -7,14 +7,19 @@ import User from "../models/userModel.js";
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
 
-  if (req.headers.authorization?.startsWith("Bearer")) {
+  if (req.headers?.authorization?.startsWith("Bearer")) {
     token = req.headers.authorization.split(" ")[1];
+
+    if (token === "null") {
+      res.status(401);
+      throw new Error("User is not authorized, has no token");
+    }
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
     const userFound = await User.findById(decoded.userId).select(
       "-password"
     );
-
+    console.log("coocoo!");
     if (userFound) {
       req.user = userFound;
       next();

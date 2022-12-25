@@ -8,7 +8,6 @@ import bgImage from "../../../images/home-bg.jpg";
 import { useQuery } from "react-query";
 import { $api } from "../../../api/api";
 import { useAuth } from "../../../hooks/useAuth";
-import { useEffect } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -38,7 +37,7 @@ const Home = () => {
         New
       </Button>
       <h1 className={styles.heading}>EXERCISES FOR THE SHOULDERS</h1>
-      <h2>Hi {data?.email}</h2>
+      <h2>Hi {isAuth ? data?.email : "Anonymous!"}</h2>
       {isSuccess && isAuth && <Counters data={data} />}
     </Layout>
   );

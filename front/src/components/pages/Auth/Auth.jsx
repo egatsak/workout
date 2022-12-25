@@ -38,6 +38,9 @@ const Auth = () => {
       onSuccess(data) {
         console.log(data);
         successLoginHandler(data.token);
+      },
+      onError() {
+        setPassword("");
       }
     }
   );

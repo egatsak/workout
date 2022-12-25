@@ -3,6 +3,7 @@
 
 .wrapper {
   position: relative;
+  height: 32px;
 
   button {
     width: 27px;
@@ -23,6 +24,7 @@
     font-size: 14px;
     box-shadow: $bx-16;
     border-radius: 10px 0 10px 10px;
+    z-index: 3;
     animation: opacity 0.4s;
 
     &--active {
