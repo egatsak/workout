@@ -6,7 +6,7 @@ import ExerciseLog from "../../../models/exerciseLogModel.js";
 //@access Private
 export const updateExerciseLog = asyncHandler(async (req, res) => {
   const { logId, timeIndex, key, value } = req.body;
-
+  console.log(key, value);
   const currentLog = await ExerciseLog.findById(logId);
 
   if (!currentLog) {
@@ -16,7 +16,11 @@ export const updateExerciseLog = asyncHandler(async (req, res) => {
 
   let newTimes = currentLog.times;
 
-  if (!timeIndex || !key || !value) {
+  if (
+    (!timeIndex && timeIndex !== 0) ||
+    !key ||
+    (!value && value !== false)
+  ) {
     res.status(404);
     throw new Error("You didn't specify all the fields!");
   }
@@ -26,7 +30,7 @@ export const updateExerciseLog = asyncHandler(async (req, res) => {
   currentLog.times = newTimes;
 
   const updatedLog = await currentLog.save();
-
+  console.log(updatedLog);
   res.json(updatedLog);
 });
 

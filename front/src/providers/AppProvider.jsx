@@ -11,7 +11,9 @@ import NewWorkout from "../components/pages/NewWorkout/NewWorkout";
 import Register from "../components/pages/Register/Register";
 import NewExercise from "../components/pages/NewExercise/NewExercise";
 import Profile from "../components/pages/Profile/Profile";
-import SingleWorkout from "../components/pages/SingleWorkout/SingleWorkout";
+import SingleWorkout from "../components/pages/Workouts/SingleWorkout";
+import WorkoutsList from "../components/pages/Workouts/WorkoutsList";
+import SingleExercise from "../components/pages/Exercises/SingleExercise";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home />, errorElement: <ErrorPage /> },
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
   {
     path: "/workout/:id",
     element: <SingleWorkout />
+  },
+  {
+    path: "/workouts",
+    element: <WorkoutsList />
+  },
+  {
+    path: "/exercise/:id",
+    element: <SingleExercise />
   }
 ]);
 
@@ -58,6 +68,14 @@ const privateRouter = createBrowserRouter([
   {
     path: "/workout/:id",
     element: <SingleWorkout />
+  },
+  {
+    path: "/workouts",
+    element: <WorkoutsList />
+  },
+  {
+    path: "/exercise/:id",
+    element: <SingleExercise />
   }
 ]);
 

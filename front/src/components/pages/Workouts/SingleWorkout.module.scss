@@ -27,6 +27,13 @@
     width: 100%;
     font-size: 16px;
     border-radius: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: lighten($dark-purple, 5%);
+    }
   }
 
   &.finished {

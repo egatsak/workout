@@ -5,7 +5,7 @@ import {
   useNavigate,
   useParams
 } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import cn from "classnames";
 import stylesLayout from "../../common/Layout.module.scss";
@@ -21,6 +21,7 @@ import { Fragment } from "react";
 
 const SingleWorkout = () => {
   const { isAuth } = useAuth();
+  const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
 
@@ -34,6 +35,26 @@ const SingleWorkout = () => {
       refetchOnWindowFocus: false,
       retry: 1
       /*       enabled: isAuth */
+    }
+  );
+
+  const {
+    mutate,
+    isLoading: isMutationLoading,
+    error,
+    isSuccess: isSuccessMutate
+  } = useMutation(
+    "Create new workout",
+    ({ exId, times }) =>
+      $api({
+        url: "/exercises/log",
+        type: "POST",
+        body: { exId, times }
+      }),
+    {
+      onSuccess(dataMutated) {
+        navigate(`/exercise/${dataMutated._id}`);
+      }
     }
   );
 
@@ -60,20 +81,29 @@ const SingleWorkout = () => {
       </div>
 
       <div className={cn(styles.wrapper, styles.main)}>
-        {isLoading && <Loader />}
+        {isMutationLoading && <Loader />}
+        {error && <Alert type="error">{error}</Alert>}
+        {isSuccessMutate && <Alert>Exercise log created</Alert>}
         {isSuccess &&
           data.exercises.map((ex, idx) => {
             return (
               <Fragment key={`ex${ex.name}`}>
-                <Link to={`/exercises/${ex._id}`}>
-                  <div className={styles["wrapper-exercise"]}>
-                    <span>{ex.name}</span>
-                    <img
-                      src={`/uploads/exercise/icon-${ex.imageName}.svg`}
-                      alt={ex.name}
-                    />
-                  </div>
-                </Link>
+                <button
+                  className={styles["wrapper-exercise"]}
+                  aria-label="Link to exercise"
+                  onClick={() => {
+                    mutate({
+                      exId: ex._id,
+                      times: ex.times
+                    });
+                  }}
+                >
+                  <span>{ex.name}</span>
+                  <img
+                    src={`/uploads/exercise/icon-${ex.imageName}.svg`}
+                    alt={ex.name}
+                  />
+                </button>
                 {idx % 2 === 1 && <div className={styles.line}></div>}
               </Fragment>
             );

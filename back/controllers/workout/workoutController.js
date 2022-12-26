@@ -39,6 +39,16 @@ export const getWorkout = asyncHandler(async (req, res) => {
   res.json({ ...workout, minutes });
 });
 
+//@desc   Get workout
+//@route  GET /api/workouts
+//@access Private
+
+export const getWorkouts = asyncHandler(async (req, res) => {
+  const workouts = await Workout.find({}).populate("exercises");
+
+  res.json(workouts);
+});
+
 //@desc   Update workout
 //@route  PUT /api/workouts
 //@access Private

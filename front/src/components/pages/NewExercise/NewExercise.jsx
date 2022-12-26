@@ -91,18 +91,7 @@ const NewExercise = () => {
               );
             })}
           </div>
-          {/*  <Select
-            classNamePrefix="select2-selection"
-            placeholder="Exercises"
-            title="Exercises"
-            options={[
-              { value: "sdfsdf", label: "Push-ups" },
-              { value: "sgnods", label: "Pull-ups" }
-            ]}
-                  value={exercises}
-            onChange={setExercises} 
-            isMulti={true}
-          /> */}
+
           <Button type="submit" variant="accent">
             Create
           </Button>

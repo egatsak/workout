@@ -19,9 +19,15 @@
     border-bottom: 2px solid transparent;
     transition: border-bottom 0.2s ease-in-out;
     cursor: pointer;
+    opacity: 0.4;
 
     &.active {
       border-color: $accent;
+    }
+
+    &:hover,
+    &.active {
+      opacity: 0.6;
     }
   }
 }

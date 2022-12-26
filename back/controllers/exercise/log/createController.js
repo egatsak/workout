@@ -6,8 +6,8 @@ import ExerciseLog from "../../../models/exerciseLogModel.js";
 //@access Private
 
 export const createNewExerciseLog = asyncHandler(async (req, res) => {
-  const { exerciseId, times } = req.body;
-
+  const { exId: exerciseId, times } = req.body;
+  console.log(exerciseId, times);
   let timesArray = [];
 
   for (let i = 0; i < times; i++) {
