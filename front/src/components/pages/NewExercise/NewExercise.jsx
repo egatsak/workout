@@ -33,7 +33,6 @@ const NewExercise = () => {
       }),
     {
       onSuccess(data) {
-        console.log(data);
         setName("");
         setTimes(3);
         setImageName("chest");

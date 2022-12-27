@@ -5,8 +5,9 @@ const { ObjectId } = mongoose.Schema;
 const workoutLogSchema = mongoose.Schema(
   {
     user: { type: ObjectId, ref: "User", required: true },
-    completed: { type: Boolean, default: true },
-    workout: { type: ObjectId, ref: "Workout", required: true }
+    workout: { type: ObjectId, ref: "Workout", required: true },
+    completed: { type: Boolean, default: false },
+    exerciseLogs: [{ type: ObjectId, ref: "ExerciseLog" }]
   },
   {
     minimize: false,

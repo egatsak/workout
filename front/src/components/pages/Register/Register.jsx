@@ -35,7 +35,6 @@ const Register = () => {
       }),
     {
       onSuccess(data) {
-        console.log(data);
         navigate("/auth");
       }
     }
@@ -43,7 +42,7 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit", password, confirmPassword);
+
     if (password !== confirmPassword) {
       //error = "Passwords don't match!";
       console.log("Passwords don't match!");

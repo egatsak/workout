@@ -1,4 +1,10 @@
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Navigate,
+  useLocation,
+  useParams,
+  useNavigate
+} from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import { useAuth } from "../../../hooks/useAuth";
 import { $api } from "../../../api/api";
@@ -14,7 +20,6 @@ import checkboxCompletedImage from "./../../../images/icon-checkbox-selected.svg
 import Header from "../../common/Header/Header";
 import Alert from "../../ui/Alert/Alert";
 import Loader from "../../ui/Loader/Loader";
-import { useEffect, useState } from "react";
 
 function randomInteger(min) {
   return function (max) {
@@ -29,6 +34,7 @@ const SingleExercise = () => {
   const { isAuth } = useAuth();
   const location = useLocation();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [bgImage, setBgImage] = useState();
 
   useEffect(() => {
@@ -48,6 +54,12 @@ const SingleExercise = () => {
     }
   );
 
+  useEffect(() => {
+    if (data?.times?.every((item) => item.completed)) {
+      setExerciseCompleted();
+    }
+  }, [data?.completed, data?.times]);
+
   const {
     mutate,
     isLoading: isLoadingMutation,
@@ -65,6 +77,25 @@ const SingleExercise = () => {
         refetch();
       },
       onError() {}
+    }
+  );
+
+  const {
+    mutate: setExerciseCompleted,
+    isLoading: isLoadingCompletedMutation,
+    error: errorCompletedMutation
+  } = useMutation(
+    "Change log completed state",
+    () =>
+      $api({
+        url: "/exercises/log/completed",
+        type: "PUT",
+        body: { logId: id, completed: true }
+      }),
+    {
+      onSuccess() {
+        navigate(-1);
+      }
     }
   );
 
@@ -118,13 +149,13 @@ const SingleExercise = () => {
                 >
                   <div className={cn(styles.opacity, styles.column)}>
                     <input
-                      type="number"
+                      type="tel"
                       value={item.prevWeight}
                       disabled
                     />
                     <i>kg /</i>
                     <input
-                      type="number"
+                      type="tel"
                       value={item.prevRepeat}
                       disabled
                     />

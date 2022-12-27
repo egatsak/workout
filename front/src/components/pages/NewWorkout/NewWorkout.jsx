@@ -24,8 +24,7 @@ const NewWorkout = () => {
     "list exercises",
     () =>
       $api({
-        url: "/exercises",
-        auth: true
+        url: "/exercises"
       }),
     {
       refetchOnWindowFocus: false
@@ -47,7 +46,6 @@ const NewWorkout = () => {
       }),
     {
       onSuccess(dataMutated) {
-        console.log(dataMutated);
         setName("");
         setExercisesCurrent([]);
       }
@@ -60,7 +58,6 @@ const NewWorkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
     const exIds = exercisesCurrent.map((ex) => ex.value);
 
     mutate({ exIds });

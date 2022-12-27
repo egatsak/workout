@@ -36,7 +36,6 @@ const Auth = () => {
       }),
     {
       onSuccess(data) {
-        console.log(data);
         successLoginHandler(data.token);
       },
       onError() {
@@ -56,7 +55,6 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
     login();
   };
 

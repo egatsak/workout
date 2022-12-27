@@ -7,7 +7,7 @@ import ExerciseLog from "../../../models/exerciseLogModel.js";
 
 export const createNewExerciseLog = asyncHandler(async (req, res) => {
   const { exId: exerciseId, times } = req.body;
-  console.log(exerciseId, times);
+
   let timesArray = [];
 
   for (let i = 0; i < times; i++) {

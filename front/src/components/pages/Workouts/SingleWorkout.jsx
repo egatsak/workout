@@ -17,7 +17,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import Header from "../../common/Header/Header";
 import Alert from "../../ui/Alert/Alert";
 import Loader from "../../ui/Loader/Loader";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 const SingleWorkout = () => {
   const { isAuth } = useAuth();
@@ -29,34 +29,41 @@ const SingleWorkout = () => {
     "get workout",
     () =>
       $api({
-        url: `/workouts/${id}`
+        url: `/workouts/log/${id}`
       }),
     {
-      refetchOnWindowFocus: false,
-      retry: 1
-      /*       enabled: isAuth */
+      refetchOnWindowFocus: false
     }
   );
 
   const {
-    mutate,
+    mutate: setWorkoutCompleted,
     isLoading: isMutationLoading,
-    error,
+    error: errorCompleted,
     isSuccess: isSuccessMutate
   } = useMutation(
-    "Create new workout",
-    ({ exId, times }) =>
+    "Change log state",
+    () =>
       $api({
-        url: "/exercises/log",
-        type: "POST",
-        body: { exId, times }
+        url: "/workouts/log/completed",
+        type: "PUT",
+        body: { logId: id }
       }),
     {
-      onSuccess(dataMutated) {
-        navigate(`/exercise/${dataMutated._id}`);
+      onSuccess() {
+        /*         navigate(`/workouts`); */
       }
     }
   );
+
+  useEffect(() => {
+    if (
+      isSuccess &&
+      data?.exerciseLogs?.every((log) => log.completed)
+    ) {
+      setWorkoutCompleted();
+    }
+  }, [isSuccess, data?.exerciseLogs]);
 
   if (!isAuth) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
@@ -75,36 +82,38 @@ const SingleWorkout = () => {
         {isSuccess && (
           <div className={styles.profile}>
             <time className={styles.time}>{data.minutes} min.</time>
-            <h1 className={stylesLayout.heading}>{data.name}</h1>
+            <h1 className={stylesLayout.heading}>
+              {data.workout.name}
+            </h1>
           </div>
         )}
       </div>
 
       <div className={cn(styles.wrapper, styles.main)}>
         {isMutationLoading && <Loader />}
-        {error && <Alert type="error">{error}</Alert>}
-        {isSuccessMutate && <Alert>Exercise log created</Alert>}
+        {isError && <Alert type="error">Workout wasn't found!</Alert>}
+        {errorCompleted && (
+          <Alert type="error">{errorCompleted}</Alert>
+        )}
+
+        {/*        {isSuccessMutate && <Alert>Exercise log created</Alert>} */}
         {isSuccess &&
-          data.exercises.map((ex, idx) => {
+          data.exerciseLogs.map((exLog, idx) => {
             return (
-              <Fragment key={`ex${ex.name}`}>
+              <Fragment key={`ex${exLog._id}`}>
                 <button
                   className={styles["wrapper-exercise"]}
                   aria-label="Link to exercise"
                   onClick={() => {
-                    mutate({
-                      exId: ex._id,
-                      times: ex.times
-                    });
+                    navigate(`/exercise/${exLog._id}`);
                   }}
                 >
-                  <span>{ex.name}</span>
+                  <span>{exLog.exercise.name}</span>
                   <img
-                    src={`/uploads/exercise/icon-${ex.imageName}.svg`}
-                    alt={ex.name}
+                    src={`/uploads/exercise/icon-${exLog.exercise.imageName}.svg`}
+                    alt={exLog.exercise.imageName}
                   />
                 </button>
-                {idx % 2 === 1 && <div className={styles.line}></div>}
               </Fragment>
             );
           })}

@@ -6,15 +6,13 @@ import ExerciseLog from "../../../models/exerciseLogModel.js";
 //@access Private
 export const updateExerciseLog = asyncHandler(async (req, res) => {
   const { logId, timeIndex, key, value } = req.body;
-  console.log(key, value);
+
   const currentLog = await ExerciseLog.findById(logId);
 
   if (!currentLog) {
     res.status(404);
     throw new Error("Current log is not found!");
   }
-
-  let newTimes = currentLog.times;
 
   if (
     (!timeIndex && timeIndex !== 0) ||
@@ -25,12 +23,13 @@ export const updateExerciseLog = asyncHandler(async (req, res) => {
     throw new Error("You didn't specify all the fields!");
   }
 
+  let newTimes = currentLog.times;
+
   newTimes[timeIndex][key] = value;
 
   currentLog.times = newTimes;
 
   const updatedLog = await currentLog.save();
-  console.log(updatedLog);
   res.json(updatedLog);
 });
 
@@ -42,12 +41,16 @@ export const updateCompletedExerciseLog = asyncHandler(
   async (req, res) => {
     const { logId, completed } = req.body;
 
-    const currentLog = await ExerciseLog.findById(logId);
+    const currentLog = await ExerciseLog.findById(logId).populate(
+      "exercise",
+      "workout"
+    );
 
     if (!currentLog) {
       res.status(404);
       throw new Error("Current log is not found!");
     }
+
     currentLog.completed = completed;
 
     const updatedLog = await currentLog.save();

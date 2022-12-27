@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { createNewWorkoutLog } from "../controllers/workout/logController.js";
+import {
+  createNewWorkoutLog,
+  getWorkoutLog,
+  updateCompleteWorkoutLog
+} from "../controllers/workout/logController.js";
 import {
   createNewWorkout,
   deleteWorkout,
@@ -17,7 +21,10 @@ router
   .post(protect, createNewWorkout)
   .put(protect, updateWorkout)
   .delete(protect, deleteWorkout);
+
 router.route("/log").post(protect, createNewWorkoutLog);
+router.route("/log/completed").put(protect, updateCompleteWorkoutLog);
 router.route("/:id").get(protect, getWorkout);
+router.route("/log/:id").get(protect, getWorkoutLog);
 
 export default router;
