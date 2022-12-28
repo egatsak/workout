@@ -1,5 +1,9 @@
 export const menu = [
   {
+    title: "Home",
+    link: "/"
+  },
+  {
     title: "Workouts",
     link: "/workouts"
   },

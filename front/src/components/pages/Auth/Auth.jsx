@@ -23,8 +23,7 @@ const Auth = () => {
   const {
     mutate: login,
     isLoading,
-    error,
-    data
+    error
   } = useMutation(
     "Authorization",
     () =>

@@ -1,5 +1,5 @@
+import { Fragment, useEffect } from "react";
 import {
-  Link,
   Navigate,
   useLocation,
   useNavigate,
@@ -7,17 +7,17 @@ import {
 } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 
-import cn from "classnames";
-import stylesLayout from "../../common/Layout.module.scss";
-import styles from "./SingleWorkout.module.scss";
-import bgImage from "./../../../images/home-bg.jpg";
-
-import { $api } from "../../../api/api";
-import { useAuth } from "../../../hooks/useAuth";
 import Header from "../../common/Header/Header";
 import Alert from "../../ui/Alert/Alert";
 import Loader from "../../ui/Loader/Loader";
-import { Fragment, useEffect } from "react";
+
+import { $api } from "../../../api/api";
+import { useAuth } from "../../../hooks/useAuth";
+
+import cn from "classnames";
+import stylesLayout from "../../common/Layout.module.scss";
+import styles from "./SingleWorkout.module.scss";
+import bgImage from "./../../../images/bg-home.jpg";
 
 const SingleWorkout = () => {
   const { isAuth } = useAuth();
@@ -39,8 +39,7 @@ const SingleWorkout = () => {
   const {
     mutate: setWorkoutCompleted,
     isLoading: isMutationLoading,
-    error: errorCompleted,
-    isSuccess: isSuccessMutate
+    error: errorCompleted
   } = useMutation(
     "Change log state",
     () =>
@@ -51,19 +50,23 @@ const SingleWorkout = () => {
       }),
     {
       onSuccess() {
-        /*         navigate(`/workouts`); */
+        navigate(`/workouts`);
       }
     }
   );
 
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
     if (
       isSuccess &&
       data?.exerciseLogs?.every((log) => log.completed)
     ) {
       setWorkoutCompleted();
     }
-  }, [isSuccess, data?.exerciseLogs]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, data?.exerciseLogs, isLoading]);
 
   if (!isAuth) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
@@ -90,14 +93,14 @@ const SingleWorkout = () => {
       </div>
 
       <div className={cn(styles.wrapper, styles.main)}>
-        {isMutationLoading && <Loader />}
+        {(isLoading || isMutationLoading) && <Loader />}
         {isError && <Alert type="error">Workout wasn't found!</Alert>}
         {errorCompleted && (
           <Alert type="error">{errorCompleted}</Alert>
         )}
 
-        {/*        {isSuccessMutate && <Alert>Exercise log created</Alert>} */}
         {isSuccess &&
+          !isLoading &&
           data.exerciseLogs.map((exLog, idx) => {
             return (
               <Fragment key={`ex${exLog._id}`}>
@@ -114,6 +117,10 @@ const SingleWorkout = () => {
                     alt={exLog.exercise.imageName}
                   />
                 </button>
+                {idx % 2 !== 0 &&
+                  idx !== data.exerciseLogs.length - 1 && (
+                    <div className={styles.line}></div>
+                  )}
               </Fragment>
             );
           })}

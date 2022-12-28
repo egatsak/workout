@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./Counters.module.scss";
 
 const Counters = ({ data }) => {

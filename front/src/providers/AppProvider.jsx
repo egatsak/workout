@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import Auth from "../components/pages/Auth/Auth";
-import ErrorPage from "../components/pages/ErrorPage/ErrorPage";
+import ErrorPage from "../components/pages/ErrorPage";
 import Home from "../components/pages/Home/Home";
 import NewWorkout from "../components/pages/NewWorkout/NewWorkout";
 import Register from "../components/pages/Register/Register";

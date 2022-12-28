@@ -6,6 +6,11 @@ import {
   useNavigate
 } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
+
+import Header from "../../common/Header/Header";
+import Alert from "../../ui/Alert/Alert";
+import Loader from "../../ui/Loader/Loader";
+
 import { useAuth } from "../../../hooks/useAuth";
 import { $api } from "../../../api/api";
 
@@ -16,10 +21,6 @@ import bgImage1 from "./../../../images/bg-workoutpage.jpg";
 import bgImage2 from "./../../../images/bg-exercisepage-alt.jpg";
 import checkboxImage from "./../../../images/icon-checkbox.svg";
 import checkboxCompletedImage from "./../../../images/icon-checkbox-selected.svg";
-
-import Header from "../../common/Header/Header";
-import Alert from "../../ui/Alert/Alert";
-import Loader from "../../ui/Loader/Loader";
 
 function randomInteger(min) {
   return function (max) {
@@ -58,6 +59,7 @@ const SingleExercise = () => {
     if (data?.times?.every((item) => item.completed)) {
       setExerciseCompleted();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.completed, data?.times]);
 
   const {
@@ -80,11 +82,7 @@ const SingleExercise = () => {
     }
   );
 
-  const {
-    mutate: setExerciseCompleted,
-    isLoading: isLoadingCompletedMutation,
-    error: errorCompletedMutation
-  } = useMutation(
+  const { mutate: setExerciseCompleted } = useMutation(
     "Change log completed state",
     () =>
       $api({

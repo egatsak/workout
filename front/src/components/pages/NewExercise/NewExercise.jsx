@@ -1,17 +1,19 @@
 import { useState } from "react";
-import cn from "classnames";
+import { Navigate, useLocation } from "react-router-dom";
+import { useMutation } from "react-query";
+
 import Layout from "../../common/Layout";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-
-import styles from "./NewExercise.module.scss";
-import bgImage from "./../../../images/bg-exercise.jpg";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { useMutation } from "react-query";
-import { $api } from "../../../api/api";
 import Loader from "../../ui/Loader/Loader";
 import Alert from "../../ui/Alert/Alert";
+
+import { useAuth } from "../../../hooks/useAuth";
+import { $api } from "../../../api/api";
+
+import cn from "classnames";
+import styles from "./NewExercise.module.scss";
+import bgImage from "./../../../images/bg-exercise.jpg";
 
 const data = ["chest", "shoulders", "biceps", "legs", "hit"];
 
@@ -32,7 +34,7 @@ const NewExercise = () => {
         body: { name, times, imageName }
       }),
     {
-      onSuccess(data) {
+      onSuccess() {
         setName("");
         setTimes(3);
         setImageName("chest");

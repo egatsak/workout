@@ -88,7 +88,7 @@ export const updateCompleteWorkoutLog = asyncHandler(
     }
 
     currentLog.completed = true;
-
+    console.log(currentLog);
     const updatedLog = await currentLog.save();
 
     res.json(updatedLog);

@@ -1,29 +1,30 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 import Layout from "../../common/Layout";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
+import Loader from "../../ui/Loader/Loader";
+import Alert from "../../ui/Alert/Alert";
+
+import { $api } from "../../../api/api";
 
 import styles from "./Register.module.scss";
 import bgImage from "./../../../images/bg-auth.jpg";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { $api } from "../../../api/api";
-import Loader from "../../ui/Loader/Loader";
-import Alert from "../../ui/Alert/Alert";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordsMatch, setIsPasswordsMatch] = useState(true);
 
   const navigate = useNavigate();
 
   const {
     mutate: register,
     isLoading,
-    error,
-    data
+    error
   } = useMutation(
     "Register",
     () =>
@@ -34,8 +35,13 @@ const Register = () => {
         body: { email, password }
       }),
     {
-      onSuccess(data) {
+      onSuccess() {
         navigate("/auth");
+      },
+      onError() {
+        setEmail("");
+        setConfirmPassword("");
+        setPassword("");
       }
     }
   );
@@ -44,8 +50,7 @@ const Register = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      //error = "Passwords don't match!";
-      console.log("Passwords don't match!");
+      setIsPasswordsMatch(false);
       setConfirmPassword("");
       setPassword("");
       return;
@@ -60,6 +65,10 @@ const Register = () => {
       <div className={styles.wrapper}>
         {isLoading && <Loader />}
         {error && <Alert type="error">{error}</Alert>}
+        {!isPasswordsMatch && (
+          <Alert type="error">Passwords don't match!</Alert>
+        )}
+
         <form onSubmit={handleSubmit}>
           <Input
             type="email"
@@ -72,14 +81,20 @@ const Register = () => {
             type="password"
             placeholder="Enter password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setIsPasswordsMatch(true);
+              setPassword(e.target.value);
+            }}
             required
           />
           <Input
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setIsPasswordsMatch(true);
+              setConfirmPassword(e.target.value);
+            }}
             required
           />
           <Link to="/auth" className="dark-link">

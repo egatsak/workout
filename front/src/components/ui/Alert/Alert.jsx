@@ -1,8 +1,5 @@
-import React from "react";
-
-import styles from "./Alert.module.scss";
-
 import cn from "classnames";
+import styles from "./Alert.module.scss";
 
 const Alert = ({ type = "success", children }) => {
   return (

@@ -1,7 +1,7 @@
 .wrapper {
   max-width: 560px;
   margin: 0 auto;
-  padding: 50px 50px;
+  padding: 50px 30px;
   text-align: center;
 }
 
@@ -21,6 +21,12 @@
 
   .heading {
     margin-bottom: 0.5rem;
+  }
+
+  &__item {
+    & + & {
+      margin-left: 8px;
+    }
   }
 
   .img-wrapper {

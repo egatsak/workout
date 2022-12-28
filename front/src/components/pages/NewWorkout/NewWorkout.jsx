@@ -1,18 +1,19 @@
 import { useState } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
 import Select from "react-select";
 
 import Layout from "../../common/Layout";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
+import Loader from "../../ui/Loader/Loader";
+import Alert from "../../ui/Alert/Alert";
+
+import { useAuth } from "../../../hooks/useAuth";
+import { $api } from "../../../api/api";
 
 import styles from "./NewWorkout.module.scss";
 import bgImage from "./../../../images/bg-workout.jpg";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
-import { useMutation, useQuery } from "react-query";
-import { $api } from "../../../api/api";
-import Loader from "../../ui/Loader/Loader";
-import Alert from "../../ui/Alert/Alert";
 
 const NewWorkout = () => {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ const NewWorkout = () => {
   const { isAuth } = useAuth();
   const location = useLocation();
 
-  const { data, isSuccess } = useQuery(
+  const { data, isSuccess, isLoading } = useQuery(
     "list exercises",
     () =>
       $api({
@@ -33,7 +34,7 @@ const NewWorkout = () => {
 
   const {
     mutate,
-    isLoading,
+    isLoading: isMutationLoading,
     error,
     isSuccess: isSuccessMutate
   } = useMutation(
@@ -45,7 +46,7 @@ const NewWorkout = () => {
         body: { name, exerciseIds: exIds }
       }),
     {
-      onSuccess(dataMutated) {
+      onSuccess() {
         setName("");
         setExercisesCurrent([]);
       }
@@ -68,13 +69,13 @@ const NewWorkout = () => {
       <Layout bgImage={bgImage} heading="Create new workout" />
 
       <div className={styles.wrapper}>
-        {isLoading && <Loader />}
+        {(isLoading || isMutationLoading) && <Loader />}
         {error && <Alert type="error">{error}</Alert>}
         {isSuccessMutate && <Alert>Workout created</Alert>}
         <form onSubmit={handleSubmit}>
           <Input
             type="text"
-            placeholder="Enter name"
+            placeholder="Workout title"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

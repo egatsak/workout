@@ -1,13 +1,13 @@
-import React from "react";
-import styles from "./Header.module.scss";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import Burger from "./Burger/Burger.jsx";
+
+import { useAuth } from "../../../hooks/useAuth";
+
+import styles from "./Header.module.scss";
 import userImage from "../../../images/header/user.svg";
 import arrowImage from "../../../images/header/icon-arrow.svg";
 import authImage from "../../../images/header/dumbbell.svg";
-
-import Burger from "./Burger/Burger.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 
 const Header = () => {
   const location = useLocation();
