@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
-    "client": "cd ../ && npm run start --prefix front"
+    "client": "cd ../ && npm run start --prefix front",
+    "build": "npm i express bcrypt dotenv express-async-handler jsonwebtoken mongoose"
   },
   "author": "",
   "license": "ISC",
