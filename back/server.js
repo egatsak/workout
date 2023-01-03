@@ -2,7 +2,6 @@ import express from "express";
 import path from "node:path";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import colors from "colors";
 
 // Config
 import { connectDB } from "./config/db.js";
@@ -27,7 +26,9 @@ connectDB();
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-
+/* 
+app.use(cors({ origin: process.env.CLIENT_URL }));
+ */
 app.use(express.json());
 
 const __dirname = path.resolve();
@@ -40,6 +41,17 @@ app.use(
 app.use("/api/users", userRoutes);
 app.use("/api/exercises", exerciseRoutes);
 app.use("/api/workouts", workoutRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  // Step 1:
+  app.use(express.static(path.resolve(__dirname, "./front/build")));
+  // Step 2:
+  app.get("*", function (request, response) {
+    response.sendFile(
+      path.resolve(__dirname, "./front/build", "index.html")
+    );
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
