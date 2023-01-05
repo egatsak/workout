@@ -26,9 +26,7 @@ connectDB();
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-/* 
-app.use(cors({ origin: process.env.CLIENT_URL }));
- */
+
 app.use(express.json());
 
 const __dirname = path.resolve();
